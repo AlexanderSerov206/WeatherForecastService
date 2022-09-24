@@ -38,7 +38,7 @@
         /// <returns>Результат выполнения операции</returns>
         public bool Update(DateTime date, int temperatureC)
         {
-            foreach (var item in _values)
+            foreach (WeatherForecast item in _values)
             {
                 if (item.Date == date)
                 {
@@ -57,8 +57,9 @@
         /// <returns>Коллекция показателей температуры</returns>
         public List<WeatherForecast> Get(DateTime dateFrom, DateTime dateTo)
         {
-            return _values.FindAll(item => item.Date >= dateFrom && item.Date <= dateTo);
+            return _values.FindAll(x => x.Date >= dateFrom && x.Date <= dateTo);
         }
+
         /// <summary>
         /// Удалить показатель температуты на дату
         /// </summary>
@@ -66,8 +67,22 @@
         /// <returns>Результат выполнения операции</returns>
         public bool Delete(DateTime date)
         {
-            //TODO: Доработать в рамках домашнего задания
-            return false;
+            if (_values.FirstOrDefault(x => x.Date == date) == null)
+                return false;
+
+            /* Логика метода Add допускает добавление нескольких значений за одну дату, 
+             * по этому я решил, что т.к. в метод Delete мы передаём только одну дату, 
+             * стоит удалять все элементы с этой датой через цикл.
+             */
+
+            List<WeatherForecast> datesToDelete = _values.Where(x => x.Date == date).ToList();
+
+            foreach (WeatherForecast weather in datesToDelete)
+            {
+                _values.Remove(weather);
+            }
+
+            return true;
         }
     }
 }

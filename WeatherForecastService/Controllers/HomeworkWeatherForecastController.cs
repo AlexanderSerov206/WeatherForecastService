@@ -27,7 +27,7 @@ namespace WeatherForecastService.Controllers
 
 
         [HttpPost("add")]
-        public IActionResult Add12345([FromQuery]  DateTime date, [FromQuery]  int temperatureC)
+        public IActionResult Add([FromQuery]  DateTime date, [FromQuery]  int temperatureC)
         {
             _holder.Add(date, temperatureC);
             return Ok();
@@ -42,8 +42,8 @@ namespace WeatherForecastService.Controllers
 
         [HttpDelete("delete")]
         public IActionResult Delete([FromQuery] DateTime date)
-        {
-            return Ok();
+        {            
+            return Ok(_holder.Delete(date));
         }
 
         [HttpGet("get")]
